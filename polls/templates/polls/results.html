@@ -1,0 +1,25 @@
+{% extends "polls/base.html" %}
+{% load static %}
+
+{% block title %}{{ question.question_text }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'polls/results.css' %}">
+
+<div class="results-container">
+  <h2 class="question-title">{{ question.question_text }}</h2>
+
+  <ul class="result-list">
+    {% for choice in question.choice_set.all %}
+      <li>
+        <span class="choice-text">{{ choice.choice_text }}</span>
+        <span class="vote-count">{{ choice.votes }} vote{{ choice.votes|pluralize }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="vote-again">
+    <a href="{% url 'polls:detail' question.id %}" class="vote-again-btn">Vote again?</a>
+  </div>
+</div>
+{% endblock %}

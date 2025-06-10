@@ -1,0 +1,33 @@
+{% extends "polls/base.html" %}
+{% load static %}
+
+{% block title %}{{ question.question_text }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'polls/detail.css' %}">
+
+<div class="detail-container">
+    <h2 class="question-title">{{ question.question_text }}</h2>
+
+    <form action="{% url 'polls:vote' question.id %}" method="post" class="vote-form">
+        {% csrf_token %}
+	{% if error_message %}
+    <p class="error-message"><strong>{{ error_message }}</strong></p>
+	{% endif %}
+
+            <ul class="choice-list">
+                {% for choice in question.choice_set.all %}
+                <li>
+                    <label>
+                <input type="radio" name="choice" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
+        <div class="submit-btn-wrap">
+            <input type="submit" value="Vote" class="submit-btn">
+        </div>
+    </form>
+</div>
+{% endblock %}
